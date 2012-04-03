@@ -104,6 +104,10 @@
       }
 
       console.log(this.name + ' is ' + this.text);
+
+      if (this.hasOwnProperty('view')) {
+        this.view.updateStatus();
+      }
     }
   };
 
