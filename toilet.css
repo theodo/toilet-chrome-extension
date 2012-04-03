@@ -1,0 +1,43 @@
+*
+{
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body
+{
+    height: 100%;
+}
+
+body
+{
+    font-family : "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #333;
+    background: #f4f4f4 repeat-x 0 0;
+    width: 90px;
+    height: 30px;
+    padding: 5px;
+    line-height: 15px
+}
+
+ul
+{
+    list-style: none;
+}
+
+li#men span.status.used
+{
+    color: #0099FF;
+}
+
+li#women span.status.used
+{
+    color: #ff00ee;
+}
+
+li span.toilet
+{
+    font-weight: bold;
+}

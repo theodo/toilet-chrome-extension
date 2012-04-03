@@ -43,10 +43,10 @@ $(function () {
 
     update: function () {
       if (this.isFree()) {
-        this.$status.addClass('free');
+        this.$status.removeClass('used');
         this.$status.text('Free');
       } else {
-        this.$status.removeClass('free');
+        this.$status.addClass('used');
         this.$status.text('Used');
       }
     }
