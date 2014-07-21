@@ -15,21 +15,17 @@
   Toilets.prototype = {
     fetch: function () {
       // Store this in the context.
-      var context = this;
       var xhr = new XMLHttpRequest();
 
       xhr.open("GET", this.url, true);
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = (function() {
         if (xhr.readyState == 4) {
           // JSON.parse does not evaluate the attacker's scripts.
           var resp = JSON.parse(xhr.responseText);
-          console.log(resp);
-
-          context.toilets[0].update(resp[0]);
-
-          context.updateBrowserAction();
+          this.toilets.every(function (toilet) { toilet.update(resp[0]) });
+          this.updateBrowserAction();
         }
-      }
+      }).bind(this);
       xhr.send();
     },
 
@@ -71,26 +67,32 @@
    */
   var Toilet = function Toilet(id, name) {
     this.name      = name;
+    this.data      = {
+        value: 900
+    };
     this.minValue  = 900;
-    this.value     = 1000;
     this.text      = null;
   };
 
   Toilet.prototype = {
     isFree: function () {
-      return this.value < this.minValue;
+      return this.data.hasOwnProperty('occupationStatus') && false === this.data.occupationStatus;
     },
 
     update: function (data) {
-      this.value = data.value;
+      this.data = data;
 
-      if (this.isFree()) {
+        if (this.isFree()) {
         this.text = 'Free';
       } else {
         this.text = 'Used';
-      }
 
-      console.log(this.name + ' is ' + this.text);
+        // occupied for more than 20 minutes
+        var duration = this.data.time - this.data.since;
+        if (duration >= (15 * 60 * 1000)) {
+            this.text = "Maybe somebody forgot to shutdown the light!"
+        }
+      }
 
       if (this.hasOwnProperty('view')) {
         this.view.updateStatus();
