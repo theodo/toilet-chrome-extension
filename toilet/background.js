@@ -1,6 +1,5 @@
 window.addEventListener('load', function () {
-  var men = new Toilet('captor1', 'Men');
-  var women = new Toilet('captor2', 'Women');
-  var toilets = new Toilets(men , women);
+  var men = new Toilet(1, 'Men');
+  var toilets = new Toilets([men]);
   toilets.poll();
 })

@@ -1,6 +1,6 @@
 {
   "name": "Theodo toilet",
-  "version": "1.0",
+  "version": "2.0",
   "manifest_version": 3,
   "description": "Are the toilets free?",
   "browser_action": {
@@ -9,10 +9,11 @@
   },
   "permissions": [
     "http://lights.theodo.fr/",
-    "https://lights.theodo.fr/"
+    "https://lights.theodo.fr/",
+    "http://192.168.102.13/"
   ],
   "background": {
       "scripts": ["model.js", "background.js"]
   },
-  "update_url": "https://raw.github.com/benja-M-1/toilet-chrome-extension/master/updates.xml"
+  "update_url": "https://raw.github.com/theodo/toilet-chrome-extension/master/updates.xml"
 }

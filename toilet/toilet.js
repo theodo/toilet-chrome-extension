@@ -1,15 +1,10 @@
 $(function () {
-  var men = new Toilet('captor1', 'Men');
+  var men = new Toilet(1, 'Men');
   var menItem = new ToiletView (men, $('ul'));
 
-  var women = new Toilet('captor2', 'Women');
-  var womenItem = new ToiletView (women, $('ul'));
-
-  var toilets = new Toilets(men , women);
-
+  var toilets = new Toilets([men]);
   toilets.poll();
   menItem.render();
-  womenItem.render();
 });
 
 (function () {

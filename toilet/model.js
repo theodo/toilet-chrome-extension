@@ -5,12 +5,11 @@
    * @param men
    * @param women
    */
-  var Toilets = function Toilets(men, women) {
-    this.men = men;
-    this.women = women;
+  var Toilets = function Toilets(toilets) {
+    this.toilets = toilets;
     this.intervalId = null;
     this.delay = 3000;
-    this.url = 'http://lights.theodo.fr';
+    this.url = 'http://192.168.102.13';
   };
 
   Toilets.prototype = {
@@ -24,13 +23,11 @@
         if (xhr.readyState == 4) {
           // JSON.parse does not evaluate the attacker's scripts.
           var resp = JSON.parse(xhr.responseText);
+          console.log(resp);
 
-          if (resp.hasOwnProperty(context.men.captor) && resp.hasOwnProperty(context.women.captor)) {
-            context.men.update(resp[context.men.captor]);
-            context.women.update(resp[context.women.captor]);
+          context.toilets[0].update(resp[0]);
 
-            context.updateBrowserAction();
-          }
+          context.updateBrowserAction();
         }
       }
       xhr.send();
@@ -39,22 +36,13 @@
     updateBrowserAction: function () {
       var iconPath = 'img/toilets_1.png';
 
-      if (this.women.isFree()) {
-        if (this.men.isFree()) {
-          iconPath = 'img/toilets_1.png';
-          title    = 'Nobody is in the toilets.';
-        } else {
-          iconPath = 'img/toilets_2.png';
-          title    = 'Men are used.';
-        }
+
+      if (this.toilets[0].isFree()) {
+        iconPath = 'img/toilets_1.png';
+        title    = 'Nobody is in the toilets.';
       } else {
-        if (this.men.isFree()) {
-          iconPath = 'img/toilets_3.png';
-          title    = 'Women are used.';
-        } else {
-          iconPath = 'img/toilets_4.png';
-          title    = 'Women and men are used.';
-        }
+        iconPath = 'img/toilets_2.png';
+        title    = 'Men are used.';
       }
 
       chrome.browserAction.setIcon({ path: iconPath });
@@ -81,21 +69,20 @@
    *
    * @param captor
    */
-  var Toilet = function Toilet(captor, name) {
-    this.captor    = captor;
+  var Toilet = function Toilet(id, name) {
     this.name      = name;
-    this.minStatus = 80;
-    this.status    = 1000;
+    this.minValue  = 900;
+    this.value     = 1000;
     this.text      = null;
   };
 
   Toilet.prototype = {
     isFree: function () {
-      return this.status > this.minStatus;
+      return this.value < this.minValue;
     },
 
-    update: function (status) {
-      this.status = status;
+    update: function (data) {
+      this.value = data.value;
 
       if (this.isFree()) {
         this.text = 'Free';
